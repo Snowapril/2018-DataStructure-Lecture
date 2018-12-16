@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main(void) {
+    freopen("rumor.inp", "r", stdin);
+    freopen("rumor.out", "w", stdout);
+
+    int N, x, d;
+    scanf("%d %d %d", &N, &x, &d);
+    vector<vector<int>> networks(N + 1);
+
+    for (int i = 1; i <= N; ++i) {
+        vector<int> relation;
+
+        int center;
+        scanf("%d", &center);
+
+        int idx;
+        do {
+            scanf("%d", &idx);
+            relation.push_back(idx);
+        } while (idx != 0);
+
+        relation.pop_back();
+        sort(relation.begin(), relation.end());
+
+        networks[i] = relation;
+    }
+
+    queue<int> rumorQueue;
+    bitset<51> visitFlag;
+
+    rumorQueue.push(x);
+    visitFlag.set(x);
+
+    for (int i = 0; i < d; ++i) {
+        int number = rumorQueue.front();
+        rumorQueue.pop();
+        printf("%d\n", number);
+
+        const vector<int>& relation = networks[number];
+
+        for (int idx : relation) {
+            if (!visitFlag.test(idx)) {
+                rumorQueue.push(idx);
+                visitFlag.set(idx);
+            }
+        }
+    }
+
+    while (!rumorQueue.empty()) {
+        int number = rumorQueue.front();
+        printf("%d\n", number);
+        rumorQueue.pop();
+    }
+
+    fclose(stdout);
+    fclose(stdin);
+    return (0);
+}

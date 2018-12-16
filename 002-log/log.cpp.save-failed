@@ -1,0 +1,92 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+class Date {
+private:
+    unsigned int time;
+public:
+    Date() {};
+    Date(unsigned int _day, unsigned int _time)
+        : time((_day - 1) * 10001 + _time) {}
+public:
+    bool operator<=(const Date& other) const {
+        return day < other.day || (day == other.day && time <= other.time);
+    }
+    bool operator>=(const Date& other) const {
+        return day > other.day  || (day == other.day && time >= other.time);
+    }
+};
+
+class DatePair {
+private:
+    Date startDate;
+    Date endDate;
+    int count;
+public:
+    DatePair() {};
+    DatePair(const Date& _start, const Date& _end)
+        : startDate(_start), endDate(_end), count(0) {};
+public:
+    bool isInRange(const Date& target) {
+        return startDate <= target && target <= endDate;
+    }
+    void addCount(void) {
+        ++count;
+    }
+    int getCount(void) const {
+        return count;
+    }
+};
+
+int main(void) {
+
+    ifstream inputFile("log.inp");
+
+    int numPairs;
+    inputFile >> numPairs;
+
+    DatePair datePairs[1000];
+
+    for (int i = 0; i < numPairs; ++i) {
+        int startDay, startTime, endDay, endTime;
+
+        inputFile >> startDay >> startTime >> endDay >> endTime;
+        datePairs[i] = DatePair(Date(startDay, startTime), Date(endDay, endTime));
+    }
+
+    inputFile.close();
+
+    ifstream systemLog("syslog.txt");
+    int numLog;
+
+    systemLog >> numLog;
+    for (int i = 0; i < numLog; ++i) {
+        int day, time = -1;
+
+        systemLog >> day;
+
+        while (true) {
+            systemLog >> time;
+            if (time == 0)
+                break;
+
+            for (int i = 0; i < numPairs; ++i) {
+                if (datePairs[i].isInRange(Date(day, time))) {
+                    datePairs[i].addCount();
+                }
+            }
+        }
+    }
+
+    systemLog.close();
+
+    ofstream outputFile("log.out");
+    for (int i = 0; i < numPairs; ++i)
+        outputFile << datePairs[i].getCount() << '\n';
+
+    outputFile.close();
+
+    return 0;
+}

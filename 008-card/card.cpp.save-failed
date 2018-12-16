@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main(void)
+{
+    ifstream input("card.inp");
+    ofstream output("card.out");
+
+    int num_card, num_action;
+    std::list<int>::iterator it1, it2;
+
+    input >> num_card >> num_action;
+    std::list<int> cards(num_card);
+    std::iota(cards.begin(), cards.end(), 1); // this creates sequence vector increases by 1.
+
+    // start actions
+    for (int i = 0; i < num_action; ++i) {
+        string action;
+        input >> action;
+
+        if (action == "Shuffle") {
+            it1 = (it2 = cards.begin());
+            advance(it2, (num_card + 1) / 2);
+
+            while (it2 != cards.end()) {
+                ++it1;
+                cards.insert(it1, *it2);
+                it2 = cards.erase(it2);
+            }
+        } else {
+            int i, j;
+            input >> i >> j;
+
+            it1 = (it2 = cards.begin());
+            advance(it1, i-1);
+            advance(it2, j);
+
+            list<int> temp_cards;
+            temp_cards.splice(temp_cards.begin(), cards, it1, it2);
+            cards.splice(cards.end(), temp_cards);
+        }
+    }
+
+    // print outputs
+    it1 = cards.begin();
+    output << *it1 << ' ';
+
+    advance(it1, num_card / 2 - 1); // this moves iterator by int(num_card / 2).
+    output << *it1 << ' ';
+
+    advance(it1, num_card / 2 + 1); // this moves iterator to the end element.
+    output << *it1;
+
+    //end of program
+    output.close();
+    input.close();
+    return EXIT_SUCCESS;
+}

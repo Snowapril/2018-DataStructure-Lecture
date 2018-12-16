@@ -1,0 +1,36 @@
+enum
+
+main을 input() process() output()으로 분리
+
+file IO를 위의 함수들에 각각 넣기
+
+map[order] = function();
+
+lambda
+
+range based for
+
+for(int& i : v) 
+
+dump 함수 만들기
+
+주석
+
+opencv_calib3d343.lib
+opencv_core343.lib
+opencv_dnn343.lib
+opencv_features2d343.lib
+opencv_flann343.lib
+opencv_highgui343.lib
+opencv_imgcodecs343.lib
+opencv_imgproc343.lib
+opencv_ml343.lib
+opencv_objdetect343.lib
+opencv_photo343.lib
+opencv_shape343.lib
+opencv_stitching343.lib
+opencv_superres343.lib
+opencv_ts343.lib
+opencv_video343.lib
+opencv_videoio343.lib
+opencv_videostab343.lib
